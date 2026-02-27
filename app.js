@@ -1,7 +1,8 @@
 // PWA Install - Universal browser support with always visible button
-let deferredPrompt;
+let deferredPrompt = null;
 let isOnline = navigator.onLine;
 let canInstall = false;
+let installPromptShown = false;
 
 // Online/Offline detection
 window.addEventListener('online', () => {
@@ -27,9 +28,25 @@ function isAppInstalled() {
     return false;
 }
 
-// PWA Install prompt
+// Detect browser type for better instructions
+function getBrowserInfo() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const browser = {
+        isChrome: userAgent.includes('chrome') && !userAgent.includes('edg') && !userAgent.includes('opr'),
+        isEdge: userAgent.includes('edg'),
+        isSafari: userAgent.includes('safari') && !userAgent.includes('chrome'),
+        isFirefox: userAgent.includes('firefox'),
+        isOpera: userAgent.includes('opr'),
+        isMobile: /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent),
+        isIOS: /iphone|ipad|ipod/.test(userAgent),
+        isAndroid: userAgent.includes('android')
+    };
+    return browser;
+}
+
+// PWA Install prompt - capture the event
 window.addEventListener('beforeinstallprompt', (e) => {
-    console.log('[App] beforeinstallprompt event fired');
+    console.log('[App] ✅ beforeinstallprompt event fired - PWA installable!');
     e.preventDefault();
     deferredPrompt = e;
     canInstall = true;
@@ -41,30 +58,211 @@ window.addEventListener('beforeinstallprompt', (e) => {
         installBtn.style.display = 'flex';
         installBtnText.textContent = 'Tətbiq quraşdır';
         installBtn.classList.add('install-ready');
+        console.log('[App] Install button updated - ready to install');
     }
 });
+
+// Show installation instructions based on browser
+function showInstallInstructions() {
+    const browser = getBrowserInfo();
+    let title = '📱 Tətbiqi Ana Ekrana Əlavə Et';
+    let instructions = '';
+    
+    if (browser.isIOS) {
+        // iOS Safari
+        title = '📱 iPhone/iPad Quraşdırma';
+        instructions = `
+Safari brauzerdə:
+
+1️⃣ Aşağıda ortada "Share" düyməsinə (📤) toxunun
+
+2️⃣ Aşağı sürüşdürüb "Add to Home Screen" tapın
+
+3️⃣ "Add" düyməsinə toxunun
+
+✅ Tətbiq ana ekranınızda görünəcək!`;
+    } else if (browser.isAndroid && browser.isChrome) {
+        // Android Chrome
+        title = '📱 Android Quraşdırma';
+        instructions = `
+Chrome brauzerdə:
+
+1️⃣ Sağ yuxarıda ⋮ (3 nöqtə) açın
+
+2️⃣ "Add to Home screen" və ya "Install app" seçin
+
+3️⃣ "Add" və ya "Install" basın
+
+✅ Tətbiq ana ekranınızda görünəcək!
+
+💡 Əgər görünmürsə, brauzerin URL-ində + ikonu ola bilər`;
+    } else if (browser.isChrome) {
+        // Desktop Chrome
+        title = '💻 Chrome Quraşdırma';
+        instructions = `
+1️⃣ Sağ yuxarıda ⋮ (3 nöqtə) açın
+
+2️⃣ "Save and share" → "Install..."
+
+   VƏ YA
+
+   URL-in sağında 🖥️+ ikonu varsa ona klikləyin
+
+3️⃣ "Install" düyməsinə basın
+
+✅ Tətbiq desktop-da açılacaq!`;
+    } else if (browser.isEdge) {
+        // Edge
+        title = '💻 Edge Quraşdırma';
+        instructions = `
+1️⃣ Sağ yuxarıda ⋯ (3 nöqtə) açın
+
+2️⃣ "Apps" → "Install this site as an app"
+
+   VƏ YA
+
+   URL-in sağında + ikonu varsa ona klikləyin
+
+3️⃣ "Install" düyməsinə basın
+
+✅ Tətbiq desktop-da açılacaq!`;
+    } else if (browser.isFirefox) {
+        // Firefox
+        title = '🔥 Firefox Quraşdırma';
+        instructions = `
+Desktop Firefox-da PWA quraşdırma məhduddur.
+
+Mobil Firefox-da:
+1️⃣ Address bar-da 🏠+ ikonu axtarın
+2️⃣ "Add to Home screen" seçin
+
+VƏ YA
+
+Chrome və ya Edge brauzerlərində açın.`;
+    } else {
+        // Other browsers
+        title = '📱 Tətbiq Quraşdırma';
+        instructions = `
+Brauzer menyusundan:
+
+▪️ "Install app" 
+▪️ "Add to Home Screen"
+▪️ URL bar-da + ikonu
+
+seçimlərini axtarın.
+
+💡 Daha yaxşı təcrübə üçün Chrome və ya Edge brauzerlərində açın.`;
+    }
+    
+    // Create custom modal instead of alert
+    showCustomModal(title, instructions);
+}
+
+// Custom modal for better UX
+function showCustomModal(title, message) {
+    // Create modal HTML
+    const modal = document.createElement('div');
+    modal.className = 'install-modal';
+    modal.innerHTML = `
+        <div class="install-modal-content">
+            <button class="install-modal-close" onclick="this.parentElement.parentElement.remove()">×</button>
+            <h2 style="margin-bottom: 20px; color: #4F46E5;">${title}</h2>
+            <pre style="white-space: pre-wrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto; line-height: 1.8; color: #1F2937;">${message}</pre>
+            <button onclick="this.parentElement.parentElement.remove()" style="margin-top: 20px; padding: 12px 24px; background: #4F46E5; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%;">Başa düşdüm</button>
+        </div>
+    `;
+    
+    // Add styles
+    const style = document.createElement('style');
+    style.textContent = `
+        .install-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        .install-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+        .install-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            color: #6B7280;
+            line-height: 1;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    `;
+    
+    document.head.appendChild(style);
+    document.body.appendChild(modal);
+}
 
 // Install button click handler
 document.addEventListener('DOMContentLoaded', () => {
     const installBtn = document.getElementById('installBtn');
     const installBtnText = document.getElementById('installBtnText');
     
-    if (!installBtn || !installBtnText) return;
+    if (!installBtn || !installBtnText) {
+        console.log('[App] Install button not found');
+        return;
+    }
     
     // Always show button initially
     installBtn.style.display = 'flex';
     
     // Check if already installed
     if (isAppInstalled()) {
-        console.log('[App] Already installed as PWA');
+        console.log('[App] ✅ Already installed as PWA - hiding button');
         installBtn.style.display = 'none';
         return;
     }
     
     console.log('[App] Not installed yet, showing install button');
     
+    // Wait a bit for beforeinstallprompt to fire
+    setTimeout(() => {
+        if (deferredPrompt) {
+            console.log('[App] ✅ beforeinstallprompt captured - automatic install available');
+            installBtnText.textContent = 'Tətbiq quraşdır';
+            installBtn.classList.add('install-ready');
+        } else {
+            console.log('[App] ⚠️ beforeinstallprompt not fired - will show manual instructions');
+            installBtnText.textContent = 'Ana ekrana əlavə et';
+        }
+    }, 2000);
+    
     // Install button click
     installBtn.addEventListener('click', async () => {
+        console.log('[App] Install button clicked');
+        
         // Check if already installed
         if (isAppInstalled()) {
             alert('✅ Tətbiq artıq quraşdırılıb!');
@@ -72,55 +270,44 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        // If we have the prompt, show it
+        // If we have the deferred prompt, use it
         if (deferredPrompt) {
-            console.log('[App] Showing install prompt');
+            console.log('[App] Using beforeinstallprompt - showing native install dialog');
             installBtnText.textContent = 'Quraşdırılır...';
             
             try {
-                deferredPrompt.prompt();
+                // Show the install prompt
+                await deferredPrompt.prompt();
+                
+                // Wait for the user's response
                 const { outcome } = await deferredPrompt.userChoice;
                 console.log('[App] Install outcome:', outcome);
                 
                 if (outcome === 'accepted') {
-                    console.log('[App] User accepted installation');
+                    console.log('[App] ✅ User accepted installation');
                     installBtnText.textContent = '✅ Quraşdırıldı';
                     setTimeout(() => {
                         installBtn.style.display = 'none';
                     }, 2000);
                 } else {
-                    console.log('[App] User dismissed installation');
+                    console.log('[App] ❌ User dismissed installation');
                     installBtnText.textContent = 'Tətbiq quraşdır';
                 }
                 
+                // Clear the prompt
                 deferredPrompt = null;
                 canInstall = false;
             } catch (err) {
                 console.error('[App] Install error:', err);
                 installBtnText.textContent = 'Tətbiq quraşdır';
+                
+                // Fallback to manual instructions
+                showInstallInstructions();
             }
         } else {
-            // No prompt available - show manual instructions
-            console.log('[App] No install prompt available');
-            
-            // Detect browser
-            const userAgent = navigator.userAgent.toLowerCase();
-            let instructions = '';
-            
-            if (userAgent.includes('chrome') && !userAgent.includes('edg')) {
-                instructions = '📱 Chrome:\n\n1. Sağ yuxarıda ⋮ (3 nöqtə) menyusunu açın\n2. "Install App" və ya "Tətbiq quraşdır" seçin\n3. Təsdiq edin';
-            } else if (userAgent.includes('edg')) {
-                instructions = '📱 Edge:\n\n1. Sağ yuxarıda ⋯ (3 nöqtə) menyusunu açın\n2. "Apps" → "Install this site as an app" seçin\n3. Təsdiq edin';
-            } else if (userAgent.includes('safari') && !userAgent.includes('chrome')) {
-                instructions = '📱 Safari (iOS):\n\n1. Aşağıda 📤 (Share) düyməsinə toxunun\n2. "Add to Home Screen" seçin\n3. "Add" basın';
-            } else if (userAgent.includes('firefox')) {
-                instructions = '📱 Firefox:\n\n1. Address bar-da 🏠+ iconuna basın\n2. "Install" seçin\n3. Təsdiq edin';
-            } else {
-                instructions = '📱 Tətbiq Quraşdırma:\n\n1. Brauzerin menyusunu açın\n2. "Tətbiq quraşdır" və ya "Add to Home Screen" axtarın\n3. Təsdiq edin\n\nvə ya\n\nChrome/Edge brauzerlərində açın.';
-            }
-            
-            alert('ℹ️ Brauzer avtomatik quraşdırma dəstəkləmir.\n\n' + instructions);
-            installBtnText.textContent = 'Necə quraşdırım?';
+            // No native prompt available - show manual instructions
+            console.log('[App] No native prompt - showing manual instructions');
+            showInstallInstructions();
         }
     });
 });
