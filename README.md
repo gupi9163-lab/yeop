@@ -51,10 +51,10 @@
 - ✅ **Standalone rejim** - Tətbiq kimi açılır
 - ✅ **Manifest.json** - Tam PWA konfiqurasiyası
 - ✅ **Responsive dizayn** - Mobil və desktop
-- ✅ **📱 Portrait Mode Lock** - Mobil cihazlarda yalnız şaquli (dikey) rejim
-  - Telefon yatay çevrildikdə xəbərdarlıq göstərir
-  - PWA rejimində orientation lock aktiv olur
-  - Landscape modda bütün content gizlədilir
+- ✅ **📱 Həmişə Portrait Rejim** - Telefon yatay tutulsa belə sayt dikey qalır
+  - CSS transform ilə avtomatik rotate
+  - Heç bir xəbərdarlıq və ya animasiya yoxdur
+  - Telefon necə tutularsa tutsun, sayt həmişə şaquli görünür
 
 ## Texnologiyalar
 - **HTML5** - Struktur
