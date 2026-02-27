@@ -4,14 +4,32 @@ let isOnline = navigator.onLine;
 let canInstall = false;
 let installPromptShown = false;
 
-// Lock screen orientation to portrait (only when supported)
-if (screen.orientation && screen.orientation.lock) {
-    window.addEventListener('load', () => {
-        screen.orientation.lock('portrait-primary').catch(() => {
-            // Silently ignore if not supported
+// Force portrait orientation lock - always active
+function forcePortraitLock() {
+    if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('portrait').catch(() => {
+            // Try alternative
+            screen.orientation.lock('portrait-primary').catch(() => {
+                console.log('[App] Orientation lock not available');
+            });
         });
-    });
+    }
 }
+
+// Lock on load
+window.addEventListener('load', forcePortraitLock);
+
+// Re-lock on orientation change
+if (screen.orientation) {
+    screen.orientation.addEventListener('change', forcePortraitLock);
+}
+
+// Re-lock when app becomes visible
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        forcePortraitLock();
+    }
+});
 
 // Online/Offline detection
 window.addEventListener('online', () => {
