@@ -4,29 +4,14 @@ let isOnline = navigator.onLine;
 let canInstall = false;
 let installPromptShown = false;
 
-// Lock screen orientation to portrait (for PWA mode)
-function lockOrientation() {
-    // Only lock in standalone PWA mode
-    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-        if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('portrait').catch(err => {
-                console.log('[App] Screen orientation lock not supported:', err);
-            });
-        }
-    }
+// Lock screen orientation to portrait (only when supported)
+if (screen.orientation && screen.orientation.lock) {
+    window.addEventListener('load', () => {
+        screen.orientation.lock('portrait-primary').catch(() => {
+            // Silently ignore if not supported
+        });
+    });
 }
-
-// Call on load
-window.addEventListener('load', () => {
-    lockOrientation();
-});
-
-// Call when app becomes visible
-document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) {
-        lockOrientation();
-    }
-});
 
 // Online/Offline detection
 window.addEventListener('online', () => {
