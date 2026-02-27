@@ -44,14 +44,25 @@ window.addEventListener('offline', () => {
 
 // Check if app is already installed
 function isAppInstalled() {
-    // Check if running as PWA
+    // Check if running as PWA (standalone mode)
     if (window.matchMedia('(display-mode: standalone)').matches) {
+        console.log('[App] ✅ Running in standalone mode - PWA installed');
         return true;
     }
+    
     // Check if running on iOS as PWA
     if (window.navigator.standalone === true) {
+        console.log('[App] ✅ Running as iOS PWA - app installed');
         return true;
     }
+    
+    // Check localStorage flag (set when appinstalled event fires)
+    if (localStorage.getItem('pwa_installed') === 'true') {
+        console.log('[App] ✅ Installation flag found - app was installed');
+        return true;
+    }
+    
+    console.log('[App] ❌ Not installed - app running in browser');
     return false;
 }
 
@@ -262,20 +273,26 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
     
-    // Always show button initially
-    installBtn.style.display = 'flex';
-    
-    // Check if already installed
+    // Check if already installed IMMEDIATELY
     if (isAppInstalled()) {
-        console.log('[App] ✅ Already installed as PWA - hiding button');
+        console.log('[App] ✅ Already installed as PWA - hiding button immediately');
         installBtn.style.display = 'none';
         return;
     }
     
+    // Show button if not installed
+    installBtn.style.display = 'flex';
     console.log('[App] Not installed yet, showing install button');
     
     // Wait a bit for beforeinstallprompt to fire
     setTimeout(() => {
+        // Re-check if installed (user might have installed in meantime)
+        if (isAppInstalled()) {
+            console.log('[App] ✅ Detected installation - hiding button');
+            installBtn.style.display = 'none';
+            return;
+        }
+        
         if (deferredPrompt) {
             console.log('[App] ✅ beforeinstallprompt captured - automatic install available');
             installBtnText.textContent = 'Tətbiq quraşdır';
@@ -284,7 +301,15 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('[App] ⚠️ beforeinstallprompt not fired - will show manual instructions');
             installBtnText.textContent = 'Ana ekrana əlavə et';
         }
-    }, 2000);
+    }, 1000);
+    
+    // Re-check every 3 seconds if app was installed
+    setInterval(() => {
+        if (isAppInstalled() && installBtn.style.display !== 'none') {
+            console.log('[App] ✅ Installation detected via interval check - hiding button');
+            installBtn.style.display = 'none';
+        }
+    }, 3000);
     
     // Install button click
     installBtn.addEventListener('click', async () => {
@@ -312,10 +337,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (outcome === 'accepted') {
                     console.log('[App] ✅ User accepted installation');
+                    localStorage.setItem('pwa_installed', 'true');
                     installBtnText.textContent = '✅ Quraşdırıldı';
                     setTimeout(() => {
                         installBtn.style.display = 'none';
-                    }, 2000);
+                    }, 1500);
                 } else {
                     console.log('[App] ❌ User dismissed installation');
                     installBtnText.textContent = 'Tətbiq quraşdır';
@@ -340,7 +366,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('appinstalled', () => {
-    console.log('[App] PWA installed successfully');
+    console.log('[App] ✅ PWA installed successfully - appinstalled event fired');
+    
+    // Set localStorage flag
+    localStorage.setItem('pwa_installed', 'true');
+    
     const installBtn = document.getElementById('installBtn');
     const installBtnText = document.getElementById('installBtnText');
     
@@ -348,7 +378,7 @@ window.addEventListener('appinstalled', () => {
         installBtnText.textContent = '✅ Quraşdırıldı';
         setTimeout(() => {
             installBtn.style.display = 'none';
-        }, 3000);
+        }, 1500);
     }
 });
 
