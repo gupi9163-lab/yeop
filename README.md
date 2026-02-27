@@ -114,20 +114,69 @@ npx serve
 
 ## PWA Quraşdırma
 
-### Desktop (Chrome/Edge)
-1. Brauzerin sağ yuxarı küncündə **"Quraşdır"** düyməsinə basın
-2. Və ya aşağıda sağ küncdə **"Tətbiq quraşdır"** düyməsinə basın
+### ✅ Avtomatik Quraşdırma (Chrome/Edge - Dəstəklənərsə)
+1. Sayta daxil olun
+2. Aşağıda sağ küncdə **"Tətbiq quraşdır"** düyməsinə basın
+3. Brauzerin quraşdırma pəncərəsi açılacaq
+4. **"Install"** və ya **"Quraşdır"** düyməsinə basın
 
-### Mobil (Android)
-1. Chrome brauzerdə açın
-2. Aşağıda **"Tətbiq quraşdır"** düyməsinə basın
-3. Və ya brauzer menyusundan "Add to Home Screen" seçin
+### 📱 Əl ilə Quraşdırma
 
-### iOS (Safari)
-1. Safari-də açın
-2. Aşağıda **📤 Share** düyməsinə toxunun
-3. "Add to Home Screen" seçin
-4. "Add" basın
+#### Desktop Chrome
+1. URL bar-ın sağında 🖥️ **+** (Install) ikonuna klikləyin
+   VƏ YA
+2. Sağ yuxarı küncdə **⋮** (3 nöqtə) → **"Save and share"** → **"Install..."**
+3. **"Install"** düyməsinə basın
+
+#### Desktop Edge
+1. URL bar-ın sağında **+** (Install app) ikonuna klikləyin
+   VƏ YA
+2. Sağ yuxarı küncdə **⋯** (3 nöqtə) → **"Apps"** → **"Install this site as an app"**
+3. **"Install"** düyməsinə basın
+
+#### Android Chrome
+1. Sağ yuxarıda **⋮** (3 nöqtə) menyusunu açın
+2. **"Add to Home screen"** və ya **"Install app"** seçin
+3. **"Add"** və ya **"Install"** basın
+
+#### iOS Safari
+1. Aşağıda **📤 Share** düyməsinə toxunun
+2. Aşağı sürüşdürüb **"Add to Home Screen"** tapın
+3. **"Add"** basın
+
+### 🔧 Troubleshooting
+
+#### "Brauzer avtomatik quraşdırma dəstəkləmir" mesajı çıxırsa:
+
+**Səbəblər:**
+1. ❌ **HTTP** istifadə edirsiniz - PWA yalnız **HTTPS** və ya **localhost**-da işləyir
+2. ❌ Brauzer PWA dəstəkləmir (məs: Firefox desktop)
+3. ❌ Tətbiq artıq quraşdırılıb
+4. ❌ Brauzer meyarlarını keçmir (nadirdir)
+
+**Həll:**
+- ✅ HTTPS URL istifadə edin (Render.com avtomatik HTTPS verir)
+- ✅ Chrome və ya Edge brauzerində açın
+- ✅ Yuxarıdakı **Əl ilə Quraşdırma** təlimatlarını izləyin
+- ✅ Brauzerin menyusundan "Install" və ya "Add to Home Screen" axtarın
+
+#### beforeinstallprompt event çıxmırsa:
+
+Chrome DevTools ilə yoxlayın:
+```
+1. F12 açın
+2. Console tab-ına keçin  
+3. Axtarın: "[App] beforeinstallprompt event fired"
+4. Əgər görünmürsə:
+   - Manifest yoxlanır: Application → Manifest
+   - Service Worker yoxlanır: Application → Service Workers
+   - Lighthouse PWA audit: Lighthouse → Progressive Web App
+```
+
+#### Test üçün:
+1. **Incognito/Private mode** istifadə edin (təmiz test)
+2. **Cache təmizləyin**: Settings → Privacy → Clear browsing data
+3. **DevTools Lighthouse**: PWA audit run edin və xətaları yoxlayın
 
 ## Əlaqə
 📱 WhatsApp: +994559406018
