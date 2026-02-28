@@ -759,28 +759,28 @@ function calculateUOMG() {
     let emoji = '';
     let color = '';
     
-    if (uomg >= 50) {
-        status = '🎉 MÜVƏFFƏQİYYƏTLƏ KEÇDİNİZ! ✅';
+    if (uomg >= 90) {
+        status = '🎉 ƏLA/ÇOX YÜKSƏK SƏVİYYƏ ✅';
         emoji = '🎉';
         color = '#10B981';
-    } else if (uomg >= 45) {
+    } else if (uomg >= 80) {
         status = '🔥 ÇOX YAXŞI 📊';
         emoji = '🔥';
         color = '#F59E0B';
-    } else if (uomg >= 41) {
+    } else if (uomg >= 70) {
         status = '💣 YAXŞI 📈';
         emoji = '💣';
         color = '#06B6D4';
-    } else if (uomg >= 36) {
-        status = '🫂 KAFİ 📉';
+    } else if (uomg >= 60) {
+        status = '🫂 ORTA 📉';
         emoji = '🫂';
         color = '#8B5CF6';
-    } else if (uomg >= 26) {
-        status = '🎭 ZƏİF 📴';
+    } else if (uomg >= 50) {
+        status = '🎭 ZƏİF/RİSKLİ ZONA 📴';
         emoji = '🎭';
         color = '#EF4444';
     } else if (uomg > 0) {
-        status = '🗿 YAXŞI OLACAQ 🆒';
+        status = '🗿 AKADEMİK PROBLEM 🆒';
         emoji = '🗿';
         color = '#6B7280';
     } else {
