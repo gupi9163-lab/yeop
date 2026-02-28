@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Hesablayıcı">
-    <title>Universitet Bal Hesablayıcı</title>
+    <title>Universitet Daxili Hər Şey</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="/styles.css">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
@@ -29,7 +29,7 @@
     <!-- WhatsApp Banner -->
     <div class="whatsapp-banner">
         <div class="banner-content">
-            <span class="banner-text">⭐ Ən ucuz sərbəst iş hazırlanması:</span>
+            <span class="banner-text">⭐ Ən Ucuz Sərbəst İş-in Hazırlanması:</span>
             <a href="#" onclick="openWhatsApp(); return false;" class="whatsapp-btn" aria-label="WhatsApp ilə əlaqə">
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="white">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -48,7 +48,7 @@
 
     <!-- Main Container -->
     <div id="mainMenu" class="main-menu">
-        <h1 class="main-title">Universitet Bal Hesablayıcı</h1>
+        <h1 class="main-title">Universitet Daxili Hər Şey</h1>
         <div class="calculator-grid">
             <div class="calc-card" onclick="openCalculator('semester')">
                 <div class="calc-icon">📚</div>
@@ -58,32 +58,32 @@
             <div class="calc-card" onclick="openCalculator('uomg')">
                 <div class="calc-icon">🎓</div>
                 <h2>ÜOMG Hesablama</h2>
-                <p>Fənn ballarına əsasən üomg-ni hesablayın</p>
+                <p>Fənn ballarına əsasən ÜOMG-ni hesablayın</p>
             </div>
             <div class="calc-card" onclick="openCalculator('payment')">
                 <div class="calc-icon">💰</div>
                 <h2>25% Ödəniş Hesablama</h2>
-                <p>Kəsr pulu və imtahan ödənişini hesablayın</p>
+                <p>Kəsr Pulu və İmtahan Ödənişini Hesablayın</p>
             </div>
             <div class="calc-card" onclick="openCalculator('age')">
                 <div class="calc-icon">🎂</div>
                 <h2>Yaş Hesablayıcı</h2>
-                <p>Yaşınızı, yaşadığınız günləri və ad gününüzə qalan vaxtı öyrənin</p>
+                <p>Yaşınızı, Yaşadığınız Günləri və Ad Gününüzə Qalan Vaxtı Öyrənin</p>
             </div>
             <div class="calc-card" onclick="openCalculator('dictionary')">
                 <div class="calc-icon">📖</div>
                 <h2>Akademik Lüğət</h2>
-                <p>Universitet həyatında tez-tez rast gəlinən terminlər</p>
+                <p>Universitet Həyatında Tez-tez Rast Gəlinən Terminlər</p>
             </div>
             <div class="calc-card" onclick="openCalculator('info')">
                 <div class="calc-icon">ℹ️</div>
                 <h2>Məlumat</h2>
-                <p>Universitet daxili faydalı məlumatlar</p>
+                <p>Universitet Daxili Faydalı Məlumatlar</p>
             </div>
             <div class="calc-card" onclick="openCalculator('links')">
                 <div class="calc-icon">🔗</div>
                 <h2>Sürətli Linklər</h2>
-                <p>Rəsmi və Qeyri-Rəsmi faydalı linklər</p>
+                <p>Rəsmi və Qeyri-Rəsmi Faydalı Linklər</p>
             </div>
         </div>
     </div>
@@ -94,7 +94,7 @@
         <h1 class="calc-title">Semestr Bal Hesablama</h1>
         
         <div class="input-group">
-            <label>Seminar bal sayını daxil edin:</label>
+            <label>Seminar Bal Sayını Daxil Edin:</label>
             <input type="number" id="seminarCount" min="1" max="11" placeholder="Məsələn: 5">
             <button onclick="generateSeminarInputs()" class="generate-btn">Yarat</button>
         </div>
@@ -102,7 +102,7 @@
         <div id="seminarInputs"></div>
 
         <div class="input-group">
-            <label>Kollekvium qiymət sayını daxil edin:</label>
+            <label>Kollekvium Qiymət Sayını Daxil Edin:</label>
             <input type="number" id="kollokCount" min="1" max="4" placeholder="Məsələn: 3">
             <button onclick="generateKollokInputs()" class="generate-btn">Yarat</button>
         </div>
@@ -110,7 +110,7 @@
         <div id="kollokInputs"></div>
 
         <div class="input-group">
-            <label>Sərbəst iş qiyməti (0-10):</label>
+            <label>Sərbəst İş Qiyməti (0-10):</label>
             <input type="number" id="serbest" min="0" max="10" step="0.1" placeholder="0-10 arası">
         </div>
 
@@ -128,7 +128,7 @@
         </div>
 
         <div class="input-group">
-            <label>Qayıb sayı:</label>
+            <label>Qayıb Sayı:</label>
             <input type="number" id="absences" min="0" placeholder="Qayıb sayını daxil edin">
         </div>
 
@@ -143,7 +143,7 @@
         <h1 class="calc-title">ÜOMG Hesablama</h1>
         
         <div class="input-group">
-            <label>Fənn sayını daxil edin (maksimum 8):</label>
+            <label>Fənn Sayını Daxil Edin (maksimum 8):</label>
             <input type="number" id="subjectCount" min="1" max="8" placeholder="Məsələn: 8">
             <button onclick="generateSubjectInputs()" class="generate-btn">Yarat</button>
         </div>
@@ -161,12 +161,12 @@
         <h1 class="calc-title">25% Ödəniş Hesablama</h1>
         
         <div class="input-group">
-            <label>İxtisasın illik ödənişi (AZN):</label>
+            <label>İxtisasın İllik Ödənişi (AZN):</label>
             <input type="number" id="yearlyPayment" min="0" placeholder="Məsələn: 3600">
         </div>
 
         <div class="input-group">
-            <label>Fənnin kredit sayı:</label>
+            <label>Fənnin Kredit Sayı:</label>
             <input type="number" id="creditCount" min="1" placeholder="Məsələn: 5">
         </div>
 
@@ -181,7 +181,7 @@
         <h1 class="calc-title">Yaş Hesablayıcı</h1>
         
         <div class="input-group">
-            <label>Doğum tarixinizi daxil edin (GG.AA.IIII):</label>
+            <label>Doğum Tarixinizi Daxil Edin (GG.AA.IIII):</label>
             <input type="text" id="birthDate" placeholder="31.12.2000" maxlength="10">
         </div>
 
